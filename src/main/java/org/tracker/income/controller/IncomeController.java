@@ -1,20 +1,20 @@
-package org.tracker.expense.controller;
+package org.tracker.income.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.tracker.expense.domain.ExpenseDTO;
-import org.tracker.expense.service.ExpenseService;
+import org.tracker.income.domain.IncomeDTO;
+import org.tracker.income.service.IncomeService;
 
 @RestController
 @Slf4j
-@RequestMapping("/expense")
+@RequestMapping("/income")
 @AllArgsConstructor
-public class ExpenseController {
+public class IncomeController {
 
-    private ExpenseService service;
+    private IncomeService service;
 
     @GetMapping("/index")
     public String index() {
@@ -22,11 +22,11 @@ public class ExpenseController {
     }
 
     @PostMapping("/add")
-    public String add(ExpenseDTO expense, RedirectAttributes rttr) {
+    public String add(IncomeDTO expense, RedirectAttributes rttr) {
         log.info("addExpense: " + expense);
         service.add(expense);
         rttr.addFlashAttribute("result", expense.getId());
-        return "redirect:/expense/list";
+        return "redirect:/income/list";
     }
 
     @GetMapping("/list")
@@ -38,16 +38,16 @@ public class ExpenseController {
     @GetMapping("/get")
     public void get(@RequestParam("id") Long id, Model model) {
         log.info("/get");
-        model.addAttribute("expense", service.get(id));
+        model.addAttribute("income", service.get(id));
     }
 
     @PostMapping("/modify")
-    public String modify(ExpenseDTO expense, RedirectAttributes rttr) {
+    public String modify(IncomeDTO expense, RedirectAttributes rttr) {
         log.info("updateExpense: " + expense);
         if (service.modify(expense)) {
             rttr.addFlashAttribute("result", "success");
         };
-        return "redirect:/expense/list";
+        return "redirect:/income/list";
     }
 
     @PostMapping("/remove")
@@ -56,6 +56,6 @@ public class ExpenseController {
         if (service.remove(id)) {
             rttr.addFlashAttribute("result", "success");
         };
-        return "redirect:/expense/list";
+        return "redirect:/income/list";
     }
 }

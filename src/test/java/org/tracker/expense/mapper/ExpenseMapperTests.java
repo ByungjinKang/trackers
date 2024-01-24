@@ -42,7 +42,7 @@ public class ExpenseMapperTests {
         expense.setExpenseDate(LocalDate.parse("2021-09-01"));
         expense.setCategory(1L);
         expense.setPaymentMethod("newbie");
-        expense.setLocation("newbie");
+        expense.setNote("newbie");
 
         mapper.insert(expense);
         log.info(String.valueOf(expense));
@@ -63,7 +63,7 @@ public class ExpenseMapperTests {
         expense.setExpenseDate(LocalDate.parse("2021-09-02"));
         expense.setCategory(2L);
         expense.setPaymentMethod("수정된 글");
-        expense.setLocation("수정된 글");
+        expense.setNote("수정된 글");
 
         int count = mapper.update(expense);
         log.info("UPDATE COUNT: " + count);

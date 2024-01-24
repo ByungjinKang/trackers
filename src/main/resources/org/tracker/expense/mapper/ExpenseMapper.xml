@@ -15,8 +15,8 @@
             SELECT seq_expense.nextval FROM dual
         </selectKey>
 
-        INSERT INTO EXPENSE (ID, DESCRIPTION, AMOUNT, EXPENSE_DATE, CATEGORY, PAYMENT_METHOD, LOCATION)
-        VALUES (seq_expense.nextval, #{description}, #{amount}, #{expenseDate}, #{category}, #{paymentMethod}, #{location})
+        INSERT INTO EXPENSE (ID, DESCRIPTION, AMOUNT, EXPENSE_DATE, CATEGORY, PAYMENT_METHOD, NOTE)
+        VALUES (seq_expense.nextval, #{description}, #{amount}, #{expenseDate}, #{category}, #{paymentMethod}, #{note})
     </insert>
 
     <select id="read" resultType="org.tracker.expense.domain.ExpenseDTO">
@@ -32,7 +32,7 @@
             EXPENSE_DATE = #{expenseDate},
             CATEGORY = #{category},
             PAYMENT_METHOD = #{paymentMethod},
-            LOCATION = #{location}
+            NOTE = #{note}
         WHERE id = #{id}
     </update>
 

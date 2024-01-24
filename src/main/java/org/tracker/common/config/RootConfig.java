@@ -17,8 +17,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = {"org.tracker.expense.service"})
-@MapperScan(basePackages = {"org.tracker.expense.mapper"})
+@ComponentScan(basePackages = {"org.tracker.expense.service", "org.tracker.income.service"})
+@MapperScan(basePackages = {"org.tracker.expense.mapper", "org.tracker.income.mapper"})
 public class RootConfig {
 
     @Autowired
