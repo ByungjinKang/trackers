@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.tracker.expense.mapper.ExpenseMapper">
+
+    <select id="getList" resultType="org.tracker.expense.domain.ExpenseDTO">
+        <![CDATA[
+        SELECT * FROM EXPENSE WHERE id > 0 ORDER BY id DESC
+        ]]>
+    </select>
+
+    <insert id="insert">
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
+            SELECT seq_expense.nextval FROM dual
+        </selectKey>
+
+        INSERT INTO EXPENSE (ID, DESCRIPTION, AMOUNT, EXPENSE_DATE, CATEGORY, PAYMENT_METHOD, LOCATION)
+        VALUES (seq_expense.nextval, #{description}, #{amount}, #{expenseDate}, #{category}, #{paymentMethod}, #{location})
+    </insert>
+
+    <select id="read" resultType="org.tracker.expense.domain.ExpenseDTO">
+        <![CDATA[
+        SELECT * FROM EXPENSE WHERE id =#{id}
+        ]]>
+    </select>
+
+    <update id="update">
+        UPDATE EXPENSE
+        SET DESCRIPTION = #{description},
+            AMOUNT = #{amount},
+            EXPENSE_DATE = #{expenseDate},
+            CATEGORY = #{category},
+            PAYMENT_METHOD = #{paymentMethod},
+            LOCATION = #{location}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM EXPENSE WHERE id =#{id}
+    </delete>
+
+</mapper>
+

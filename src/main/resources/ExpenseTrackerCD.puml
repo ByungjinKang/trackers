@@ -1,0 +1,141 @@
+@startuml
+
+class ExpenseController {
+    - expenseService: ExpenseService
+    + addExpense(expenseDTO: ExpenseDTO): ResponseEntity<Void>
+    + getAllExpenses(): ResponseEntity<List<ExpenseDTO>>
+    + getExpenseById(expenseID: Long): ResponseEntity<ExpenseDTO>
+    + updateExpense(expenseID: Long, updatedExpense: ExpenseDTO): ResponseEntity<Void>
+    + deleteExpense(expenseID: Long): ResponseEntity<Void>
+}
+
+class ChartController {
+    - chartService: ChartService
+    + GenerateGraph(): ResponseEntity<GraphDTO>
+}
+
+class User {
+    - id: Long
+    - username: String
+    - password: String
+    - email: String
+    - firstName: String
+    - lastName: String
+    - roles: List<Role>
+    + getId(): Long
+    + setId(id: Long): void
+    + getUsername(): String
+    + setUsername(username: String): void
+    + getPassword(): String
+    + setPassword(password: String): void
+    + getEmail(): String
+    + setEmail(email: String): void
+    + getFirstName(): String
+    + setFirstName(firstName: String): void
+    + getLastName(): String
+    + setLastName(lastName: String): void
+    + getRoles(): List<Role>
+    + setRoles(roles: List<Role>): void
+}
+
+class ExpenseService {
+    - expenseRepository: ExpenseRepository
+    - expenseMapper: ExpenseMapper
+    + addExpense(expenseDTO: ExpenseDTO): void
+    + getAllExpenses(): List<ExpenseDTO>
+    + getExpenseById(expenseId: Long): ExpenseDTO
+    + updateExpense(expenseId: Long, updatedExpense: ExpenseDTO): void
+    + deleteExpense(expenseId: Long): void
+}
+
+class ChartService {
+    - expenseRepository: ExpenseRepository
+    - expenseMapper: ExpenseMapper
+    + GenerateGraph(): GraphDTO
+}
+
+class UserService {
+    - userRepository: UserRepository
+    - userMapper: UserMapper
+    + addUser(userDTO: UserDTO): void
+    + getAllUsers(): List<UserDTO>
+    + getUserById(userId: Long): UserDTO
+    + updateUser(userId: Long, updatedUser: UserDTO): void
+    + deleteUser(userId: Long): void
+}
+
+class UserDetailsService {
+    - userRepository: UserRepository
+    - userMapper: UserMapper
+    + loadUserByUsername(username: String): UserDetails
+}
+
+class ExpenseRepository {
+}
+
+class UserRepository {
+}
+
+class CategoryRepository {
+}
+
+class Expense {
+}
+
+class Category {
+}
+
+class User {
+}
+
+class SecurityConfig {
+}
+
+class DatabaseConfig {
+}
+
+class WebConfig {
+}
+
+class ExpenseDTO {
+}
+
+class CategoryDTO {
+}
+
+class GraphDTO {
+}
+
+class CustomException {
+}
+
+class ExpenseMapper {
+}
+
+class CategoryMapper {
+}
+
+class UserMapper {
+}
+
+ExpenseController --right--> ExpenseService: - expenseService
+ExpenseController --> ExpenseDTO: + addExpense(expenseDTO: ExpenseDTO)
+ExpenseController --> ExpenseDTO: + getAllExpenses(): List<ExpenseDTO>
+ExpenseController --> ExpenseDTO: + getExpenseById(expenseId: Long): ExpenseDTO
+ExpenseController --> ExpenseDTO: + updateExpense(expenseId: Long, updatedExpense: ExpenseDTO)
+ExpenseController --> ExpenseDTO: + deleteExpense(expenseId: Long)
+
+ExpenseService --> ExpenseRepository: - expenseRepository
+ExpenseService --> ExpenseMapper: - expenseMapper
+ExpenseService --> ExpenseDTO: + addExpense(expenseDTO: ExpenseDTO)
+ExpenseService --> ExpenseDTO: + getAllExpenses(): List<ExpenseDTO>
+ExpenseService --> ExpenseDTO: + getExpenseById(expenseId: Long): ExpenseDTO
+ExpenseService --> ExpenseDTO: + updateExpense(expenseId: Long, updatedExpense: ExpenseDTO)
+ExpenseService --> ExpenseDTO: + deleteExpense(expenseId: Long)
+
+ChartService --> ExpenseRepository: - expenseRepository
+ChartService --> ExpenseMapper: - expenseMapper
+ChartService --> GraphDTO: + GenerateGraph(): GraphDTO
+
+
+@enduml
