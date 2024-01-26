@@ -7,17 +7,17 @@ Java 및 SpringBoot Framework 기반의 웹 개발
 ### Getting Started
 <hr>
 
-###Clone Repository
+### Clone Repository
 ```
   git clone https://github.com/ByungjinKang/trackers.git
 ```
 
-###build.gradle
+### build.gradle
 ```
   ./gradlew --refresh-dependencies
 ```
 
-###run application
+### run application
 - TrackerApplication.java
 ```
   ./gradlew bootRun  
