@@ -15,6 +15,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	providedRuntime
 }
 
 repositories {
@@ -29,8 +30,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'com.oracle.database.jdbc:ojdbc8'
 	implementation 'log4j:log4j:1.2.17'
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'javax.servlet:jstl:1.2'
 	testImplementation 'junit:junit:4.13.1'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'

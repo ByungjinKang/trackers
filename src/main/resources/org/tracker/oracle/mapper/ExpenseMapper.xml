@@ -16,7 +16,7 @@
         </selectKey>
 
         INSERT INTO EXPENSE (ID, DESCRIPTION, AMOUNT, EXPENSE_DATE, CATEGORY, PAYMENT_METHOD, NOTE)
-        VALUES (seq_expense.nextval, #{description}, #{amount}, #{expenseDate}, #{category}, #{paymentMethod}, #{note})
+        VALUES (seq_expense.nextval, #{description}, #{amount}, #{date}, #{category}, #{paymentMethod}, #{note})
     </insert>
 
     <select id="read" resultType="org.tracker.expense.domain.ExpenseDTO">
@@ -29,7 +29,7 @@
         UPDATE EXPENSE
         SET DESCRIPTION = #{description},
             AMOUNT = #{amount},
-            EXPENSE_DATE = #{expenseDate},
+            EXPENSE_DATE = #{date},
             CATEGORY = #{category},
             PAYMENT_METHOD = #{paymentMethod},
             NOTE = #{note}

@@ -2,24 +2,20 @@ package org.tracker.income.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tracker.income.domain.IncomeDTO;
 import org.tracker.income.service.IncomeService;
 
-@RestController
+@Controller
 @Slf4j
 @RequestMapping("/income")
 @AllArgsConstructor
 public class IncomeController {
 
     private IncomeService service;
-
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
 
     @PostMapping("/add")
     public String add(IncomeDTO expense, RedirectAttributes rttr) {
