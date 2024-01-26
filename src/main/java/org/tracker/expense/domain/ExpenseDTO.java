@@ -12,7 +12,7 @@ public class ExpenseDTO {
     private String description; // 지출 내용 또는 설명
     private double amount; // 지출 금액
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate expenseDate; // 지출 일자
+    private LocalDate date; // 지출 일자
     private Long category; // 해당 지출이 속한 카테고리
     private String paymentMethod; // 결제 수단 (예: 현금, 카드)
     private String note;

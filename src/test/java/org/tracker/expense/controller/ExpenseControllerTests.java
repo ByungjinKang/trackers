@@ -13,13 +13,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
+import org.tracker.expense.mapper.ExpenseMapper;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,11 +47,12 @@ public class ExpenseControllerTests {
 
     @Test
     public void testList() throws Exception {
-        log.info(
-                String.valueOf(mockMvc.perform(MockMvcRequestBuilders.get("/expense/list"))
-                        .andReturn()
-                        .getModelAndView()
-                        .getModelMap()));
+        ResultActions a1 = mockMvc.perform(MockMvcRequestBuilders.get("/expense/list"));
+        MvcResult a2 = a1.andReturn();
+        ModelAndView a3 = a2.getModelAndView();
+        ModelMap a4 = a3.getModelMap();
+        log.info(a4);
+
     }
 
 //    @Test
@@ -85,6 +91,6 @@ public class ExpenseControllerTests {
 //                .andReturn()
 //                .getModelAndView().getModelMap()));
 //    }
-    }
+}
 
 

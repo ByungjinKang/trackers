@@ -39,7 +39,7 @@ public class ExpenseMapperTests {
         ExpenseDTO expense = new ExpenseDTO();
         expense.setDescription("새로 작성하는 글");
         expense.setAmount(1000);
-        expense.setExpenseDate(LocalDate.parse("2021-09-01"));
+        expense.setDate(LocalDate.parse("2021-09-01"));
         expense.setCategory(1L);
         expense.setPaymentMethod("newbie");
         expense.setNote("newbie");
@@ -60,7 +60,7 @@ public class ExpenseMapperTests {
         expense.setId(1L);
         expense.setDescription("수정된 글");
         expense.setAmount(2000);
-        expense.setExpenseDate(LocalDate.parse("2021-09-02"));
+        expense.setDate(LocalDate.parse("2021-09-02"));
         expense.setCategory(2L);
         expense.setPaymentMethod("수정된 글");
         expense.setNote("수정된 글");

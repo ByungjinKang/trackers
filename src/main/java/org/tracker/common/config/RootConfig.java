@@ -17,8 +17,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = {"org.tracker.expense.service", "org.tracker.income.service"})
-@MapperScan(basePackages = {"org.tracker.expense.mapper", "org.tracker.income.mapper"})
+@ComponentScan(basePackages = {"org.tracker.expense.service", "org.tracker.income.service", "org.tracker.common.service"})
+@MapperScan(basePackages = {"org.tracker.expense.mapper", "org.tracker.income.mapper", "org.tracker.common.mapper"})
 public class RootConfig {
 
     @Autowired
@@ -41,7 +41,7 @@ public class RootConfig {
         sqlSessionFactory.setDataSource(dataSource());
         sqlSessionFactory.setConfigLocation(applicationContext.getResource("classpath:/mybatis-config.xml"));
         sqlSessionFactory.setMapperLocations(
-                new PathMatchingResourcePatternResolver().getResources("classpath:/org/tracker/expense/mapper/*.xml")
+                new PathMatchingResourcePatternResolver().getResources("classpath:/org/tracker/oracle/mapper/*.xml")
         );
         return sqlSessionFactory.getObject();
     }

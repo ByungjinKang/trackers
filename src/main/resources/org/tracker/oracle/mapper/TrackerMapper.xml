@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.tracker.common.mapper.TrackerMapper">
+    <select id="getAllList" resultType="org.tracker.common.domain.TrackerDTO">
+    <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT 'EXPENSE' as type, e.expense_date AS transaction_date, e.amount, e.description, exp.categoryName, e.payment_method
+                 FROM EXPENSE e
+                 JOIN CATEGORY_EX exp ON e.category = exp.id
+                 UNION ALL
+                 SELECT 'INCOME' as type, i.income_date AS transaction_date, i.amount, i.description, inc.categoryName, i.payment_method
+                 FROM INCOME i
+                 JOIN CATEGORY_IN inc ON i.category = inc.id
+             )
+        ORDER BY transaction_date
+        ]]>
+    </select>
+</mapper>
+

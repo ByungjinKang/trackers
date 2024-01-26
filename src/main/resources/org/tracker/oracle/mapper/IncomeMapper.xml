@@ -16,7 +16,7 @@
         </selectKey>
 
         INSERT INTO INCOME (ID, DESCRIPTION, AMOUNT, INCOME_DATE, CATEGORY, PAYMENT_METHOD, NOTE)
-        VALUES (seq_income.nextval, #{description}, #{amount}, #{incomeDate}, #{category}, #{paymentMethod}, #{note})
+        VALUES (seq_income.nextval, #{description}, #{amount}, #{date}, #{category}, #{paymentMethod}, #{note})
     </insert>
 
     <select id="read" resultType="org.tracker.income.domain.IncomeDTO">
@@ -29,7 +29,7 @@
         UPDATE INCOME
         SET DESCRIPTION = #{description},
             AMOUNT = #{amount},
-            INCOME_DATE = #{incomeDate},
+            INCOME_DATE = #{date},
             CATEGORY = #{category},
             PAYMENT_METHOD = #{paymentMethod},
             NOTE = #{note}

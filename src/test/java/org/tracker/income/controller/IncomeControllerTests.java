@@ -63,10 +63,10 @@ public class IncomeControllerTests {
     public void testAdd() throws Exception {
         String result = mockMvc.perform(MockMvcRequestBuilders.post("/income/add")
                 .param("description", "테스트")
-                .param("amount", String.valueOf(1000))
-                .param("incomeDate", LocalDate.parse("2021-09-01").toString())
+                .param("amount", String.valueOf(100000))
+                .param("incomeDate", LocalDate.parse("2021-07-01").toString())
                 .param("category", String.valueOf(1))
-                .param("paymentMethod", "newbie")
+                .param("paymentMethod", "은행")
                 .param("note", "newbie")
         ).andReturn().getResponse().getContentAsString();
 

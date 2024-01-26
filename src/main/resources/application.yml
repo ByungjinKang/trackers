@@ -1,5 +1,9 @@
 server:
   port: 8081
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
 
 spring:
   datasource:
@@ -7,6 +11,10 @@ spring:
     url: jdbc:oracle:thin:@localhost:1521:XE
     username: c##tracker
     password: 1234
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
 
 mybatis:
   config-location: classpath:mybatis-config.xml
