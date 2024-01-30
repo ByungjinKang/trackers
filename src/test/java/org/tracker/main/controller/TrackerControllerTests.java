@@ -1,9 +1,7 @@
-package org.tracker.expense.controller;
+package org.tracker.main.controller;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,13 +16,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
-import org.tracker.expense.mapper.ExpenseMapper;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,7 +28,7 @@ import java.util.Map;
         classes = {org.tracker.common.config.RootConfig.class,
                 org.tracker.common.config.ServletConfig.class})
 @Log4j
-public class ExpenseControllerTests {
+public class TrackerControllerTests {
 
     @Setter(onMethod_ = {@Autowired})
     private WebApplicationContext ctx;
@@ -47,7 +42,7 @@ public class ExpenseControllerTests {
 
     @Test
     public void testList() throws Exception {
-        ResultActions a1 = mockMvc.perform(MockMvcRequestBuilders.get("/expense/list"));
+        ResultActions a1 = mockMvc.perform(MockMvcRequestBuilders.get("/index"));
         MvcResult a2 = a1.andReturn();
         ModelAndView a3 = a2.getModelAndView();
         ModelMap a4 = a3.getModelMap();
@@ -77,7 +72,7 @@ public class ExpenseControllerTests {
                 .param("expenseDate", LocalDate.parse("2021-09-01").toString())
                 .param("category", String.valueOf(1))
                 .param("paymentMethod", "newbie")
-                .param("note", "newbie")
+//                .param("note", "newbie")
         ).andReturn().getResponse().getContentAsString();
 
         log.info(result);

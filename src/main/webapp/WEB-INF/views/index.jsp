@@ -46,9 +46,12 @@
         </div>
         <div class="modal-body">
           <!-- Input fields -->
-          <input type="text" id="name" placeholder="Name">
-          <input type="text" id="paymentMethod" placeholder="Payment Method">
-          <input type="number" id="amount" placeholder="Amount">
+          <input type="date" id="trackerDate">
+          <input type="text" id="categoryName" placeholder="종류">
+          <input type="text" id="description" placeholder="내용">
+          <input type="text" id="assetName" placeholder="자산">
+          <input type="number" id="amount" placeholder="금액">
+          <input type="text" id="type" placeholder="타입">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -74,20 +77,25 @@
 
       // Send POST request when submit button is clicked
       $('#submit').click(function() {
-        var date = $('#expenseDate').val();
-        var name = $('#name').val();
+        var trackerDate = $('#trackerDate').val();
+        var categoryName = $('#categoryName').val();
         var description = $('#description').val();
-        var paymentMethod = $('#paymentMethod').val();
+        var assetName = $('#assetName').val();
         var amount = $('#amount').val();
+        var type = $('#type').val();
 
         $.ajax({
-          url: '/expense/add',
+          url: '/index/add',
           method: 'POST',
-          data: {
-            name: name,
-            paymentMethod: paymentMethod,
-            amount: amount
-          },
+          contentType: 'application/json',
+          data: JSON.stringify({
+            trackerDate: trackerDate,
+            categoryName: categoryName,
+            description: description,
+            assetName: assetName,
+            amount: amount,
+            type: type
+          }),
           success: function(response) {
             // Handle success
             $('#myModal').modal('hide');
@@ -120,8 +128,8 @@
           <tbody>
           <c:forEach items="${list}" var="tracker">
             <tr>
-              <td><c:out value="${tracker.name}" /></td>
-              <td><c:out value="${tracker.paymentMethod}" /></td>
+              <td><c:out value="${tracker.categoryName}" /></td>
+              <td><c:out value="${tracker.assetName}" /></td>
               <td><c:out value="${tracker.amount}" /></td>
             </tr>
           </c:forEach>

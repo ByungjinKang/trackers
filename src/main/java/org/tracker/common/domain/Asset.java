@@ -3,9 +3,8 @@ package org.tracker.common.domain;
 import lombok.Data;
 
 @Data
-public class Category {
+public class Asset {
     private Long Id;
     private String Name;
-    private String description;
     private String type;
 }

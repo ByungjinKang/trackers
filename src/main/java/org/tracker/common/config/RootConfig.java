@@ -1,6 +1,5 @@
 package org.tracker.common.config;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -10,15 +9,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = {"org.tracker.expense.service", "org.tracker.income.service", "org.tracker.common.service"})
-@MapperScan(basePackages = {"org.tracker.expense.mapper", "org.tracker.income.mapper", "org.tracker.common.mapper"})
+@ComponentScan(basePackages = {"org.tracker.main.service", "org.tracker.category.service", "org.tracker.category.repository"})
+@MapperScan(basePackages = {"org.tracker.main.mapper"})
 public class RootConfig {
 
     @Autowired
@@ -33,6 +31,11 @@ public class RootConfig {
         dataSource.setPassword("1234");
 
         return dataSource;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource());
     }
 
     @Bean
