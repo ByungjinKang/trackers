@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan(
-        basePackages = {"org.tracker.expense.controller", "org.tracker.income.controller", "org.tracker.common.controller"}
+        basePackages = {"org.tracker.main.controller", "org.tracker.user.controller"}
 )
 public class ServletConfig implements WebMvcConfigurer {
 

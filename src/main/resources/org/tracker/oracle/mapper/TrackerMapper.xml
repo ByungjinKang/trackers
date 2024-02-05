@@ -2,21 +2,112 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.tracker.common.mapper.TrackerMapper">
-    <select id="getAllList" resultType="org.tracker.common.domain.TrackerDTO">
+<mapper namespace="org.tracker.main.mapper.TrackerMapper">
+
+    <select id="getList" resultType="org.tracker.main.domain.TrackerDTO">
     <![CDATA[
-        SELECT *
-        FROM (
-                 SELECT 'EXPENSE' as type, e.expense_date AS transaction_date, e.amount, e.description, exp.categoryName, e.payment_method
-                 FROM EXPENSE e
-                 JOIN CATEGORY_EX exp ON e.category = exp.id
-                 UNION ALL
-                 SELECT 'INCOME' as type, i.income_date AS transaction_date, i.amount, i.description, inc.categoryName, i.payment_method
-                 FROM INCOME i
-                 JOIN CATEGORY_IN inc ON i.category = inc.id
-             )
-        ORDER BY transaction_date
+        SELECT t.description, t.amount, t.tracker_date, cat.name as category_Name, asst.name as asset_Name
+        FROM TRACKER t
+        JOIN CATEGORY cat ON t.category_id = cat.id
+        JOIN ASSET asst ON t.asset_id = asst.id
+        ORDER BY tracker_date DESC
         ]]>
     </select>
+
+    <select id="getListById" resultType="org.tracker.main.domain.TrackerDTO">
+        SELECT t.description, t.amount, t.tracker_date, t.type_id, cat.name as category_name, asst.name as asset_name
+        FROM TRACKER t
+                 JOIN CATEGORY cat ON t.category_id = cat.id
+                 JOIN ASSET asst ON t.asset_id = asst.id
+        WHERE t.user_id = #{userId}
+        <if test="typeId != null">
+            AND t.type_id = #{typeId}
+        </if>
+        ORDER BY tracker_date DESC
+    </select>
+
+    <select id="findCategory" resultType="org.tracker.common.domain.Category">
+        SELECT name
+        FROM CATEGORY
+        WHERE user_id IS NULL OR user_id = #{userId}
+        <if test="typeId != null">
+            AND t.type_id = #{typeId}
+        </if>
+        ORDER BY name
+    </select>
+
+    <select id="findAsset" resultType="org.tracker.common.domain.Asset">
+        SELECT name
+        FROM ASSET
+        WHERE user_id IS NULL OR user_id = #{userId}
+        <if test="typeId != null">
+            AND t.type_id = #{typeId}
+        </if>
+        ORDER BY name
+    </select>
+
+    <select id="countList" resultType="int">
+        SELECT COUNT(*)
+        FROM TRACKER
+        WHERE user_id = #{id}
+    </select>
+
+    <select id="getExpenseList" resultType="org.tracker.main.domain.TrackerDTO">
+    <![CDATA[
+        SELECT t.description, t.amount, t.tracker_date, cat.name as category_name, asst.name as asset_name
+        FROM TRACKER t
+        JOIN CATEGORY cat ON t.category_id = cat.id
+        JOIN ASSET asst ON t.asset_id = asst.id
+        WHERE type = 'EXPENSE'
+        ORDER BY tracker_date DESC
+        ]]>
+    </select>
+
+    <select id="getIncomeList" resultType="org.tracker.main.domain.TrackerDTO">
+    <![CDATA[
+        SELECT t.description, t.amount, t.tracker_date, cat.name as category_Name, asst.name as asset_Name
+        FROM TRACKER t
+        JOIN CATEGORY cat ON t.category_id = cat.id
+        JOIN ASSET asst ON t.asset_id = asst.id
+        WHERE type = 'income'
+        ORDER BY tracker_date DESC
+        ]]>
+    </select>
+
+    <insert id="insert">
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
+            SELECT seq_expense.nextval FROM dual
+        </selectKey>
+        INSERT INTO TRACKER (ID, DESCRIPTION, AMOUNT, TRACKER_DATE, CATEGORY_ID, ASSET_ID, TYPE_ID, USER_ID)
+        VALUES (seq_expense.nextval, #{description}, #{amount}, #{trackerDate}, #{categoryId}, #{assetId}, #{typeId}, #{userId})
+    </insert>
+
+    <select id="read" resultType="org.tracker.main.domain.TrackerDTO">
+        <![CDATA[
+        SELECT t.description, t.amount, t.tracker_date, cat.name as category_Name, asst.name as asset_Name
+        FROM TRACKER t
+        JOIN CATEGORY cat ON t.category_id = cat.id
+        JOIN ASSET asst ON t.asset_id = asst.id
+        WHERE id =#{id}
+        ORDER BY tracker_date DESC
+        ]]>
+    </select>
+
+    <update id="update">
+        <![CDATA[
+        UPDATE TRACKER
+        SET DESCRIPTION = #{description},
+            AMOUNT = #{amount},
+            TRACKER_DATE = #{trackerDate},
+            CATEGORY_ID = #{categoryId},
+            ASSET_ID = #{assetId},
+            TYPE_ID = #{typeId}
+        WHERE id = #{id}
+        ]]>
+    </update>
+
+    <delete id="delete">
+        DELETE FROM TRACKER WHERE id =#{id}
+    </delete>
 </mapper>
 
