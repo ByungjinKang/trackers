@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.tracker.user.mapper.UserMapper">
+
+    <select id="findUserByIdAndPassword" resultType="org.tracker.user.domain.UserDTO">
+        SELECT *
+        FROM APP_USER
+        WHERE id = #{id}
+    </select>
+
+    <select id="findUserNum" resultType="org.tracker.user.domain.UserDTO">
+        SELECT num
+        FROM APP_USER
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertUser">
+        <selectKey keyProperty="num" order="BEFORE" resultType="long">
+            SELECT seq_user.nextval FROM dual
+        </selectKey>
+        INSERT INTO APP_USER (NUM, ID, PASSWORD)
+        VALUES (seq_user.nextval, #{id}, #{password})
+    </insert>
+
+    <insert id="insertById">
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
+            SELECT seq_expense.nextval FROM dual
+        </selectKey>
+        INSERT INTO TRACKER (ID, DESCRIPTION, AMOUNT, TRACKER_DATE, CATEGORY_ID, ASSET_ID, TYPE_ID, USER_ID)
+        VALUES (seq_expense.nextval, #{description}, #{amount}, #{trackerDate}, #{categoryId}, #{assetId}, #{typeId}, #{userId})
+    </insert>
+
+</mapper>

@@ -4,8 +4,9 @@ import lombok.Data;
 
 @Data
 public class Category {
-    private Long Id;
-    private String Name;
+    private Long id;
+    private String name;
     private String description;
     private String type;
+    private String userId;
 }

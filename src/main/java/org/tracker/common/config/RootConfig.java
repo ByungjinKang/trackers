@@ -15,8 +15,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = {"org.tracker.main.service", "org.tracker.category.service", "org.tracker.category.repository"})
-@MapperScan(basePackages = {"org.tracker.main.mapper"})
+@ComponentScan(basePackages = {"org.tracker.main.service", "org.tracker.user.service", "org.tracker.common.convert"})
+@MapperScan(basePackages = {"org.tracker.main.mapper", "org.tracker.user.mapper", "org.tracker.common.mapper"})
 public class RootConfig {
 
     @Autowired
