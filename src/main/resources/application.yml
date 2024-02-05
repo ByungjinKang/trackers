@@ -7,16 +7,27 @@ server:
 
 spring:
   datasource:
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1521:XE
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:oracle:thin:@localhost:1521:xe
     username: c##tracker
     password: 1234
   mvc:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+  security:
+    user:
+      password: 12345
 
 mybatis:
   config-location: classpath:mybatis-config.xml
   configuration:
     map-underscore-to-camel-case: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          servlet:
+            DispatcherServlet: DEBUG

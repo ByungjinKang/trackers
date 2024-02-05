@@ -14,7 +14,9 @@ public class TrackerDTO {
     private LocalDate trackerDate;
     private String categoryName;
     private String AssetName;
-    private String type;
+    private String typeName;
     private Long categoryId;
     private Long assetId;
+    private Long typeId;
+    private Long userId;
 }

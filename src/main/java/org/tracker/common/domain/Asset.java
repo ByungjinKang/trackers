@@ -7,4 +7,5 @@ public class Asset {
     private Long Id;
     private String Name;
     private String type;
+    private String userId;
 }

@@ -14,9 +14,47 @@
         ]]>
     </select>
 
+    <select id="getListById" resultType="org.tracker.main.domain.TrackerDTO">
+        SELECT t.description, t.amount, t.tracker_date, t.type_id, cat.name as category_name, asst.name as asset_name
+        FROM TRACKER t
+                 JOIN CATEGORY cat ON t.category_id = cat.id
+                 JOIN ASSET asst ON t.asset_id = asst.id
+        WHERE t.user_id = #{userId}
+        <if test="typeId != null">
+            AND t.type_id = #{typeId}
+        </if>
+        ORDER BY tracker_date DESC
+    </select>
+
+    <select id="findCategory" resultType="org.tracker.common.domain.Category">
+        SELECT name
+        FROM CATEGORY
+        WHERE user_id IS NULL OR user_id = #{userId}
+        <if test="typeId != null">
+            AND t.type_id = #{typeId}
+        </if>
+        ORDER BY name
+    </select>
+
+    <select id="findAsset" resultType="org.tracker.common.domain.Asset">
+        SELECT name
+        FROM ASSET
+        WHERE user_id IS NULL OR user_id = #{userId}
+        <if test="typeId != null">
+            AND t.type_id = #{typeId}
+        </if>
+        ORDER BY name
+    </select>
+
+    <select id="countList" resultType="int">
+        SELECT COUNT(*)
+        FROM TRACKER
+        WHERE user_id = #{id}
+    </select>
+
     <select id="getExpenseList" resultType="org.tracker.main.domain.TrackerDTO">
     <![CDATA[
-        SELECT t.description, t.amount, t.tracker_date, cat.name as category_Name, asst.name as asset_Name
+        SELECT t.description, t.amount, t.tracker_date, cat.name as category_name, asst.name as asset_name
         FROM TRACKER t
         JOIN CATEGORY cat ON t.category_id = cat.id
         JOIN ASSET asst ON t.asset_id = asst.id
@@ -40,8 +78,8 @@
         <selectKey keyProperty="id" order="BEFORE" resultType="long">
             SELECT seq_expense.nextval FROM dual
         </selectKey>
-        INSERT INTO TRACKER (ID, DESCRIPTION, AMOUNT, TRACKER_DATE, CATEGORY_ID, ASSET_ID, TYPE_ID)
-        VALUES (seq_expense.nextval, #{description}, #{amount}, #{trackerDate}, #{categoryId}, #{assetId}, #{typeId})
+        INSERT INTO TRACKER (ID, DESCRIPTION, AMOUNT, TRACKER_DATE, CATEGORY_ID, ASSET_ID, TYPE_ID, USER_ID)
+        VALUES (seq_expense.nextval, #{description}, #{amount}, #{trackerDate}, #{categoryId}, #{assetId}, #{typeId}, #{userId})
     </insert>
 
     <select id="read" resultType="org.tracker.main.domain.TrackerDTO">
