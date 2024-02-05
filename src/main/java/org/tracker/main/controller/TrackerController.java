@@ -66,6 +66,11 @@ public class TrackerController {
         }
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpSession session) {
+        session.invalidate();
+    }
+
 //    @PostMapping("/login")
 //    public boolean login(@RequestParam String userId, @RequestParam String password, HttpSession session) {
 //        Long userNum = userService.login(userId, password);

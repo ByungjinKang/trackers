@@ -10,7 +10,7 @@
         FROM TRACKER t
         JOIN CATEGORY cat ON t.category_id = cat.id
         JOIN ASSET asst ON t.asset_id = asst.id
-        ORDER BY tracker_date DESC
+        ORDER BY t.id DESC
         ]]>
     </select>
 
@@ -23,7 +23,7 @@
         <if test="typeId != null">
             AND t.type_id = #{typeId}
         </if>
-        ORDER BY tracker_date DESC
+        ORDER BY t.id DESC
     </select>
 
     <select id="findCategory" resultType="org.tracker.common.domain.Category">
@@ -59,7 +59,7 @@
         JOIN CATEGORY cat ON t.category_id = cat.id
         JOIN ASSET asst ON t.asset_id = asst.id
         WHERE type = 'EXPENSE'
-        ORDER BY tracker_date DESC
+        ORDER BY t.id DESC
         ]]>
     </select>
 
@@ -70,7 +70,7 @@
         JOIN CATEGORY cat ON t.category_id = cat.id
         JOIN ASSET asst ON t.asset_id = asst.id
         WHERE type = 'income'
-        ORDER BY tracker_date DESC
+        ORDER BY t.id DESC
         ]]>
     </select>
 
@@ -79,7 +79,7 @@
             SELECT seq_expense.nextval FROM dual
         </selectKey>
         INSERT INTO TRACKER (ID, DESCRIPTION, AMOUNT, TRACKER_DATE, CATEGORY_ID, ASSET_ID, TYPE_ID, USER_ID)
-        VALUES (seq_expense.nextval, #{description}, #{amount}, #{trackerDate}, #{categoryId}, #{assetId}, #{typeId}, #{userId})
+        VALUES (#{id}, #{description}, #{amount}, #{trackerDate}, #{categoryId}, #{assetId}, #{typeId}, #{userId})
     </insert>
 
     <select id="read" resultType="org.tracker.main.domain.TrackerDTO">

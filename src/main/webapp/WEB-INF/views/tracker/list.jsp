@@ -16,6 +16,52 @@
     <link href="/resources/css/dropdown.css" rel="stylesheet" />
 </head>
 <body id="page-top">
+<script>
+    function setTodayDate(elementId) {
+        document.getElementById(elementId).value = new Date().toISOString().slice(0, 10);
+    }
+
+    function submitData(type) {
+        console.log('submitData:', type)
+        var trackerDate = $('#' + type + 'TrackerDate').val();
+        var categoryName = $('#' + type + 'CategoryName').val();
+        var description = $('#' + type + 'Description').val();
+        var assetName = $('#' + type + 'AssetName').val();
+        var amount = $('#' + type + 'Amount').val();
+        var typeName = $('#' + type + 'Type').val();
+
+        console.log('Form data:', { // Add this line
+            trackerDate,
+            categoryName,
+            description,
+            assetName,
+            amount,
+            typeName
+        });
+
+        $.ajax({
+            url: '/tracker/add',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                trackerDate: trackerDate,
+                categoryName: categoryName,
+                description: description,
+                assetName: assetName,
+                amount: amount,
+                typeName: typeName
+            }),
+            success: function(response) {
+                // Handle success
+                console.log(response);
+            },
+            error: function(error) {
+                // Handle error
+                console.log(error);
+            }
+        });
+    }
+</script>
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <div class="container px-4">
@@ -23,9 +69,10 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">목록</a></li>
+                <li class="nav-item"><a class="nav-link" href="#services">달력</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">차트</a></li>
+                <li class="nav-item" id="logout"><a class="nav-link" href="#">로그아웃</a></li>
             </ul>
         </div>
     </div>
@@ -33,157 +80,24 @@
 <!-- Header-->
 <header class="bg-primary bg-gradient text-white">
     <div class="container px-4 text-center">
-        <h1 class="fw-bolder">fw-bolder</h1>
-        <p class="lead">p class</p>
+<%--        <p class="lead" id="currentDateYear"></p>--%>
+        <h5 class="fw-bolder" id="currentDateYear"></h5>
+        <div>
+            <button id="prevMonth">&lt;</button>
+            <h1 class="fw-bolder" id="currentDateMonth"></h1>
+            <button id="nextMonth">&gt;</button>
+        </div>
         <%--    <a class="btn btn-lg btn-light" href="#about">start button</a>--%>
-    </div>
-
-    <!-- Bootstrap Modal -->
-    <div class="modal fade" id="expenseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="expenseModalLabel"><span style="color: black;">지출</span></h4>
-                </div>
-                <div class="modal-body">
-                    <!-- Input fields -->
-                    <input type="date" id="expenseTrackerDate" >
-                    <select id="expenseCategoryName">
-                        <option value="none">===종류===</option>
-                        <c:forEach var="category" items="${categoryList}">
-                            <option value="${category.name}">${category.name}</option>
-                        </c:forEach>
-                    </select>
-                    <input type="text" id="expenseDescription" placeholder="내용">
-                    <select id="expenseAssetName">
-                        <option value="none">===자산===</option>
-                        <c:forEach var="asset" items="${assetList}">
-                            <option value="${asset.name}">${asset.name}</option>
-                        </c:forEach>
-                    </select>
-                    <input type="number" id="expenseAmount" placeholder="금액">
-                    <input type="hidden" id="expenseType" value="지출">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="expenseSubmit">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="incomeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="incomeModalLabel"><span style="color: black;">추가</span></h4>
-                </div>
-                <div class="modal-body">
-                    <!-- Input fields -->
-                    <input type="date" id="incomeTrackerDate">
-                    <select id="incomeCategoryName">
-                        <option value="none">===종류===</option>
-                        <c:forEach var="category" items="${categoryList}">
-                            <option value="${category.name}">${category.name}</option>
-                        </c:forEach>
-                    </select>
-                    <input type="text" id="incomeDescription" placeholder="내용">
-                    <select id="incomeAssetName">
-                        <option value="none">===자산===</option>
-                        <c:forEach var="asset" items="${assetList}">
-                            <option value="${asset.name}">${asset.name}</option>
-                        </c:forEach>
-                    </select>
-                    <input type="number" id="incomeAmount" placeholder="금액">
-                    <input type="hidden" id="incomeType" value="수입">
-<%--                    <select id="type">--%>
-<%--                        <option value="지출">지출</option>--%>
-<%--                        <option value="수입">수입</option>--%>
-<%--                    </select>--%>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="incomeSubmit">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap Modal -->
-    <div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="regModalLabel">Register</h4>
-                </div>
-                <div class="modal-body">
-                    <!-- Input fields -->
-                    <input type="text" id="regId" placeholder="아이디"><br>
-                    <input type="text" id="regPassword" placeholder="패스워드">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="regSubmit">Register</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <%--  <!-- Bootstrap Modal -->--%>
-    <%--  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--%>
-    <%--    <div class="modal-dialog" role="document">--%>
-    <%--      <div class="modal-content">--%>
-    <%--        <div class="modal-header">--%>
-    <%--          <h4 class="modal-title" id="loginModalLabel">login</h4>--%>
-    <%--        </div>--%>
-    <%--        <div class="modal-body">--%>
-    <%--          <!-- Input fields -->--%>
-    <%--          <input type="text" id="userId" placeholder="아이디"><br>--%>
-    <%--          <input type="text" id="userPassword" placeholder="패스워드">--%>
-    <%--        </div>--%>
-    <%--        <div class="modal-footer">--%>
-    <%--          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
-    <%--          <button type="button" class="btn btn-primary" id="loginForm">Login</button>--%>
-    <%--        </div>--%>
-    <%--      </div>--%>
-    <%--    </div>--%>
-    <%--  </div>--%>
-
-    <!-- Bootstrap Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel2">Login</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="loginUserId">User ID</label>
-                            <input type="text" class="form-control" id="loginUserId" placeholder="Enter user ID">
-                        </div>
-                        <div class="form-group">
-                            <label for="loginUserPassword">Password</label>
-                            <input type="password" class="form-control" id="loginUserPassword" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="loginSubmit">login</button>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Start Button -->
     <a class="btn btn-lg btn-light" id="incomeAdd">수입</a>
     <a class="btn btn-lg btn-light" id="expenseAdd">지출</a>
-    <a class="btn btn-lg btn-light" id="logout">Logout</a>
 
     <!-- jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </header>
 <!-- About section-->
 <section id="about">
@@ -261,76 +175,158 @@
 </footer>
 
 <script>
-    function submitData(type) {
-        var trackerDate = $('#' + type + 'TrackerDate').val();
-        var categoryName = $('#' + type + 'CategoryName').val();
-        var description = $('#' + type + 'Description').val();
-        var assetName = $('#' + type + 'AssetName').val();
-        var amount = $('#' + type + 'Amount').val();
-        var typeName = $('#' + type + 'Type').val();
+    var incomeFormDiv = document.createElement('div');
+    var expenseFormDiv = document.createElement('div');
+    incomeFormDiv.id = 'incomeFormDiv';
+    expenseFormDiv.id = 'expenseFormDiv';
 
-        $.ajax({
-            url: '/tracker/add',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                trackerDate: trackerDate,
-                categoryName: categoryName,
-                description: description,
-                assetName: assetName,
-                amount: amount,
-                typeName: typeName
-            }),
-            success: function(response) {
-                // Handle success
-                $('#' + type + 'Modal').modal('hide');
-            },
-            error: function(error) {
-                // Handle error
-                console.log(error);
-            }
-        });
-    }
+    var expenseAddButton = document.getElementById('expenseAdd');
+    expenseAddButton.parentNode.insertBefore(incomeFormDiv, expenseAddButton.nextSibling);
+    expenseAddButton.parentNode.insertBefore(expenseFormDiv, expenseAddButton.nextSibling);
 
     $(document).ready(function() {
-        // Show modal when button is clicked
-        ['income', 'expense'].forEach(function(buttonId) {
-            $('#' + buttonId + 'Add').click(function() {
-                $('#' + buttonId + 'Modal').modal('show');
+        generateIncomeFormHTML();
+        generateExpenseFormHTML();
+
+        var incomeAddButton = $('#incomeAdd');
+        var expenseAddButton = $('#expenseAdd');
+
+        setTodayDate('expenseTrackerDate');
+        expenseAddButton.addClass('button-clicked');
+
+        // 처음에는 수입 form을 숨깁니다.
+        $('#incomeForm').hide();
 
 
+        // "수입" 버튼에 클릭 이벤트 리스너를 추가합니다.
+        incomeAddButton.click(function() {
+            // "지출" form을 숨기고 "수입" form을 표시합니다.
+            $('#expenseForm').hide();
+            $('#incomeForm').show();
+
+            setTodayDate('incomeTrackerDate');
+
+            // Change button colors
+            incomeAddButton.removeClass('button-default');
+            incomeAddButton.addClass('button-clicked');
+            expenseAddButton.removeClass('button-clicked');
+            expenseAddButton.addClass('button-default');
+        });
+
+        // "지출" 버튼에 클릭 이벤트 리스너를 추가합니다.
+        expenseAddButton.click(function() {
+            // "수입" form을 숨기고 "지출" form을 표시합니다.
+            $('#incomeForm').hide();
+            $('#expenseForm').show();
+
+            setTodayDate('expenseTrackerDate');
+
+            // Change button colors
+            expenseAddButton.removeClass('button-default');
+            expenseAddButton.addClass('button-clicked');
+            incomeAddButton.removeClass('button-clicked');
+            incomeAddButton.addClass('button-default');
+        });
+
+        function generateIncomeFormHTML() {
+            var incomeFormHTML = `
+    <form id="incomeForm">
+        <input type="date" id="incomeTrackerDate">
+        <select id="incomeCategoryName">
+            <option value="none">===종류===</option>
+            <c:forEach var="category" items="${categoryList}">
+                <option value="${category.name}">${category.name}</option>
+            </c:forEach>
+        </select>
+        <input type="text" id="incomeDescription" placeholder="내용">
+        <select id="incomeAssetName">
+            <option value="none">===자산===</option>
+            <c:forEach var="asset" items="${assetList}">
+                <option value="${asset.name}">${asset.name}</option>
+            </c:forEach>
+        </select>
+        <input type="number" id="incomeAmount" placeholder="금액">
+        <input type="hidden" id="incomeType" value="수입">
+        <button type="submit" id="incomeSubmit">Submit</button>
+    </form>
+    `;
+            incomeFormDiv.innerHTML += incomeFormHTML;
+
+            $('#incomeSubmit').click(function(event) {
+                console.log('incomeSubmit button clicked');
+                event.preventDefault();
+                submitData('income');
             });
-        });
+        }
 
-        // Send POST request when submit button is clicked
-        ['income', 'expense'].forEach(function(buttonId) {
-            $('#' + buttonId + 'Submit').click(function() {
-                submitData(buttonId);
+        function generateExpenseFormHTML() {
+            var expenseFormHTML = `
+    <form id="expenseForm">
+        <input type="date" id="expenseTrackerDate">
+        <select id="expenseCategoryName">
+            <option value="none">===종류===</option>
+            <c:forEach var="category" items="${categoryList}">
+                <option value="${category.name}">${category.name}</option>
+            </c:forEach>
+        </select>
+        <input type="text" id="expenseDescription" placeholder="내용">
+        <select id="expenseAssetName">
+            <option value="none">===자산===</option>
+            <c:forEach var="asset" items="${assetList}">
+                <option value="${asset.name}">${asset.name}</option>
+            </c:forEach>
+        </select>
+        <input type="number" id="expenseAmount" placeholder="금액">
+        <input type="hidden" id="expenseType" value="지출">
+        <button type="submit" id="expenseSubmit">Submit</button>
+    </form>
+    `;
+            expenseFormDiv.innerHTML += expenseFormHTML;
+
+            $('#expenseSubmit').click(function(event) {
+                event.preventDefault()
+                submitData('expense');
             });
-        });
-    });
+        }
 
-    function setTodayDate(elementId) {
-        document.getElementById(elementId).value = new Date().toISOString().slice(0, 10);
-    }
+        var date = new Date();
 
-    setTodayDate('expenseTrackerDate');
-    setTodayDate('incomeTrackerDate');
+        // 년도와 월을 가져옵니다.
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
 
-    $('input[name="type"]').change(function() {
-        var selectedTypes = [];
-        $('input[name="type"]:checked').each(function() {
-            selectedTypes.push($(this).val());
-        });
+        // 원하는 형식으로 날짜를 변환합니다.
+        var formattedDateYear = year + '년 '
+        var formattedDateMonth = month + '월';
 
-        $('#trackerTable tr').each(function() {
-            var type = $(this).data('type');
-            if (selectedTypes.includes(type.toString())) {
-                $(this).show();
-            } else {
-                $(this).hide();
+        // h1 태그에 날짜를 설정합니다.
+        $('#currentDateYear').text(formattedDateYear);
+        $('#currentDateMonth').text(formattedDateMonth);
+
+        // "이전 달" 버튼에 클릭 이벤트 리스너를 추가합니다.
+        $('#prevMonth').click(function() {
+            month--;
+            if (month < 1) {
+                month = 12;
+                year--;
             }
+            $('#currentDateYear').text(year + '년 ');
+            $('#currentDateMonth').text(month + '월');
         });
+
+        // "다음 달" 버튼에 클릭 이벤트 리스너를 추가합니다.
+        $('#nextMonth').click(function() {
+            month++;
+            if (month > 12) {
+                month = 1;
+                year++;
+            }
+            $('#currentDateYear').text(year + '년 ');
+            $('#currentDateMonth').text(month + '월');
+        });
+
+        // "로그아웃" 버튼에 클릭 이벤트 리스너를 추가합니다.
+        function
     });
 </script>
 <!-- Bootstrap core JS-->
