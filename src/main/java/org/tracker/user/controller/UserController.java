@@ -17,7 +17,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/tracker/register")
+    @PostMapping("/index/register")
     public UserDTO register(@RequestBody UserDTO user) {
         return userService.register(user);
     }

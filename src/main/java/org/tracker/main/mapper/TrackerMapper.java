@@ -13,9 +13,12 @@ public interface TrackerMapper {
     public List<TrackerDTO> getList();
     public List<TrackerDTO> getListById(@Param("userId") Long userId, @Param("typeId") Long typeId);
 
+    public List<TrackerDTO> getListByDate(@Param("userId") Long userId, @Param("typeId") Long typeId, @Param("appYear") Integer appYear, @Param("appMonth") Integer appMonth);
+    public List<Category> findCategoryExpense(@Param("userId") Long userId);
+    public List<Asset> findAssetExpense(@Param("userId") Long userId);
 
-    public List<Category> findCategory(@Param("userId") Long userId, @Param("typeId") Long typeId);
-    public List<Asset> findAsset(@Param("userId") Long userId, @Param("typeId") Long typeId);
+    public List<Category> findCategoryIncome(@Param("userId") Long userId);
+    public List<Asset> findAssetIncome(@Param("userId") Long userId);
 
 
     public int countList(Long id);

@@ -30,12 +30,22 @@ public class TrackerService {
         return mapper.getListById(userId, typeId);
     }
 
-    public List<Category> findCategory(Long userId, Long typeId) {
-        return mapper.findCategory(userId, typeId);
+    public List<TrackerDTO> getListByDate(Long userId, Long typeId, Integer appYear, Integer appMonth){
+        return mapper.getListByDate(userId, typeId, appYear, appMonth);
     }
 
-    public List<Asset> findAsset(Long userId, Long typeId) {
-        return mapper.findAsset(userId, typeId);
+    public List<Category> findCategoryExpense(Long userId) {
+        return mapper.findCategoryExpense(userId);
+    }
+    public List<Category> findCategoryIncome(Long userId) {
+        return mapper.findCategoryIncome(userId);
+    }
+
+    public List<Asset> findAssetExpense(Long userId) {
+        return mapper.findAssetExpense(userId);
+    }
+    public List<Asset> findAssetIncome(Long userId) {
+        return mapper.findAssetIncome(userId);
     }
 
     public int countList(Long userId) {

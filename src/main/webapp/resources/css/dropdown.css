@@ -27,3 +27,15 @@
     margin: 0 10px;
     vertical-align: bottom;
 }
+
+h1 {
+    width: 100px;
+    height: 40px;
+    overflow: hidden;
+}
+
+.container-monthButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

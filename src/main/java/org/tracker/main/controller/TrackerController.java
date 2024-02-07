@@ -3,6 +3,8 @@ package org.tracker.main.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,9 @@ import org.tracker.user.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -67,30 +71,67 @@ public class TrackerController {
     }
 
     @PostMapping("/logout")
-    public void logout(HttpSession session) {
+    public String logout(HttpSession session) {
         session.invalidate();
+        return "tracker/index";
     }
 
-//    @PostMapping("/login")
-//    public boolean login(@RequestParam String userId, @RequestParam String password, HttpSession session) {
-//        Long userNum = userService.login(userId, password);
-//        logger.debug("userNum: " + userNum);
+//    @GetMapping("/list")
+//    public String getListById(Model model, HttpSession session, @RequestParam(required = false) Long typeId) {
+//        Long userNum = (Long) session.getAttribute("userNum");
 //        if (userNum != null) {
-//            session.setAttribute("userNum", userNum);
-//            return "redirect:/tracker/list";
-//        } else {
-//            return "/tracker/login";
+//            populateModelWithTrackerData(model, userNum, typeId);
 //        }
+//        return "tracker/list";
+//    }
+
+//    @GetMapping("/list")
+//    public String getListByDate(Model model, HttpSession session, @RequestParam(required = false) Long typeId, @RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
+//        Long userNum = (Long) session.getAttribute("userNum");
+//        if (userNum != null) {
+//            if (year != null && month != null) {
+//                // 년도와 월이 주어진 경우, 해당 년도와 월의 트래커 목록을 가져옵니다.
+//                model.addAttribute("trackerList", service.getListByDate(userNum, typeId, year, month));
+//            } else {
+//                // 년도와 월이 주어지지 않은 경우, 사용자 ID를 기반으로 트래커 목록을 가져옵니다.
+//                model.addAttribute("trackerList", service.getListById(userNum, typeId));
+//            }
+//            populateModelWithTrackerData(model, userNum, typeId);
+//        }
+//        return "tracker/list";
 //    }
 
     @GetMapping("/list")
-    public String getListById(Model model, HttpSession session, @RequestParam(required = false) Long typeId) {
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getListByDate(HttpSession session, @RequestParam(required = false) Long typeId, @RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
+        Long userNum = (Long) session.getAttribute("userNum");
+        List<TrackerDTO> trackerList = null;
+        Map<String, Object> response = new HashMap<>();
+        if (userNum != null) {
+            if (year != null && month != null) {
+                trackerList = service.getListByDate(userNum, typeId, year, month);
+            } else {
+                trackerList = service.getListById(userNum, typeId);
+            }
+            response.put("trackerList", trackerList);
+            response.put("categoryListExpense", service.findCategoryExpense(userNum));
+            response.put("categoryListIncome", service.findCategoryIncome(userNum));
+            response.put("assetListExpense", service.findAssetExpense(userNum));
+            response.put("assetListIncome", service.findAssetIncome(userNum));
+            response.put("countList", service.countList(userNum));
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/view")
+    public String viewTrackerList(Model model, HttpSession session, @RequestParam(required = false) Long typeId, @RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
         Long userNum = (Long) session.getAttribute("userNum");
         if (userNum != null) {
             populateModelWithTrackerData(model, userNum, typeId);
         }
         return "tracker/list";
     }
+
 
 //    @GetMapping("/list")
 //    public String getListById(Model model, HttpSession session) {
@@ -108,9 +149,10 @@ public class TrackerController {
 //    }
 
     private void populateModelWithTrackerData(Model model, Long userNum, Long typeId) {
-        model.addAttribute("trackerList", service.getListById(userNum, typeId));
-        model.addAttribute("categoryList", service.findCategory(userNum, typeId));
-        model.addAttribute("assetList", service.findAsset(userNum, typeId));
+        model.addAttribute("categoryListExpense", service.findCategoryExpense(userNum));
+        model.addAttribute("categoryListIncome", service.findCategoryIncome(userNum));
+        model.addAttribute("assetListExpense", service.findAssetExpense(userNum));
+        model.addAttribute("assetListIncome", service.findAssetIncome(userNum));
         model.addAttribute("countList", service.countList(userNum));
     }
 

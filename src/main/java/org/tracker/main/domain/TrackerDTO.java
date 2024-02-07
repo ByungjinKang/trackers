@@ -19,4 +19,6 @@ public class TrackerDTO {
     private Long assetId;
     private Long typeId;
     private Long userId;
+    private Integer appYear;
+    private Integer appMonth;
 }

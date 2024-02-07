@@ -22,9 +22,11 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">List</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Calender</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Chart</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" id="reg">Sign Up</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:void(0)" id="login">Sign In</a></li>
       </ul>
     </div>
   </div>
@@ -66,47 +68,31 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="regModalLabel">Register</h4>
+          <h4 class="modal-title" id="regModalLabel">Sign Up</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
-          <!-- Input fields -->
-          <input type="text" id="regId" placeholder="아이디"><br>
-          <input type="text" id="regPassword" placeholder="패스워드">
+              <label for="regId">User ID</label>
+              <input type="text" class="form-control" id="regId" placeholder="Enter your ID">
+              <label for="regPassword">Password</label>
+              <input type="password" class="form-control" id="regPassword" placeholder="Password">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="regSubmit">Register</button>
+          <button type="button" class="btn btn-default close" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="regSubmit">Sign Up</button>
         </div>
       </div>
     </div>
   </div>
-
-  <%--  <!-- Bootstrap Modal -->--%>
-  <%--  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--%>
-  <%--    <div class="modal-dialog" role="document">--%>
-  <%--      <div class="modal-content">--%>
-  <%--        <div class="modal-header">--%>
-  <%--          <h4 class="modal-title" id="loginModalLabel">login</h4>--%>
-  <%--        </div>--%>
-  <%--        <div class="modal-body">--%>
-  <%--          <!-- Input fields -->--%>
-  <%--          <input type="text" id="userId" placeholder="아이디"><br>--%>
-  <%--          <input type="text" id="userPassword" placeholder="패스워드">--%>
-  <%--        </div>--%>
-  <%--        <div class="modal-footer">--%>
-  <%--          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
-  <%--          <button type="button" class="btn btn-primary" id="loginForm">Login</button>--%>
-  <%--        </div>--%>
-  <%--      </div>--%>
-  <%--    </div>--%>
-  <%--  </div>--%>
 
   <!-- Bootstrap Modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel2">Login</h4>
+          <h4 class="modal-title" id="myModalLabel2">Sign In</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -121,22 +107,31 @@
               <label for="loginUserPassword">Password</label>
               <input type="password" class="form-control" id="loginUserPassword" placeholder="Password">
             </div>
-            <button type="submit" class="btn btn-primary" id="loginSubmit">login</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default close" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="loginSubmit">Sign In</button>
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Start Button -->
-  <a class="btn btn-lg btn-light" id="reg">Register</a>
-  <a class="btn btn-lg btn-light" id="login">Login</a>
-
   <!-- jQuery and Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </header>
 <!-- About section-->
+<section id="about">
+  <div class="container px-4">
+    <div class="row gx-4 justify-content-center">
+      <div class="col-lg-8">
+        <h2>Services we offer</h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut optio velit inventore, expedita quo laboriosam possimus ea consequatur vitae, doloribus consequuntur ex. Nemo assumenda laborum vel, labore ut velit dignissimos.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- Services section-->
 <section class="bg-light" id="services">
   <div class="container px-4">
@@ -194,8 +189,8 @@
         },
         error: function(error) {
           // Handle error
-          alert('Login failed: ' + error.responseText);
-          console.log('Login failed: ' + error.responseText);
+          alert('Register failed: ' + error.responseText);
+          console.log('Register failed: ' + error.responseText);
         }
       });
     });
@@ -216,7 +211,7 @@
         success: function(data) {
           if (data) {
             $('#loginModal').modal('hide');
-            window.location.href = '/tracker/list';
+            window.location.href = '/tracker/view';
           } else {
             alert('Login failed: ' + error.responseText);
             console.log('Login failed: ' + error.responseText);
@@ -259,8 +254,11 @@
       }
     });
   });
-
-    });
+    $('.close').click(function() {
+      var modal = $(this).closest('.modal');
+      modal.modal('hide');
+    })
+  });
 
 </script>
 <!-- Bootstrap core JS-->

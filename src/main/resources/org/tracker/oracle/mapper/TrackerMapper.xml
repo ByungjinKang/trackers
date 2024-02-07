@@ -17,32 +17,52 @@
     <select id="getListById" resultType="org.tracker.main.domain.TrackerDTO">
         SELECT t.description, t.amount, t.tracker_date, t.type_id, cat.name as category_name, asst.name as asset_name
         FROM TRACKER t
-                 JOIN CATEGORY cat ON t.category_id = cat.id
-                 JOIN ASSET asst ON t.asset_id = asst.id
+             JOIN CATEGORY cat ON t.category_id = cat.id
+             JOIN ASSET asst ON t.asset_id = asst.id
         WHERE t.user_id = #{userId}
-        <if test="typeId != null">
-            AND t.type_id = #{typeId}
-        </if>
         ORDER BY t.id DESC
     </select>
 
-    <select id="findCategory" resultType="org.tracker.common.domain.Category">
+    <select id="getListByDate" resultType="org.tracker.main.domain.TrackerDTO">
+        SELECT t.description, t.amount, t.tracker_date, t.type_id, cat.name as category_name, asst.name as asset_name
+        FROM TRACKER t
+            JOIN CATEGORY cat ON t.category_id = cat.id
+            JOIN ASSET asst ON t.asset_id = asst.id
+        WHERE t.user_id = #{userId}
+            AND EXTRACT(YEAR FROM t.tracker_date) = #{appYear}
+            AND EXTRACT(MONTH FROM t.tracker_date) = #{appMonth}
+        ORDER BY t.id DESC
+    </select>
+
+    <select id="findCategoryExpense" resultType="org.tracker.common.domain.Category">
         SELECT name
         FROM CATEGORY
-        WHERE user_id IS NULL OR user_id = #{userId}
-        <if test="typeId != null">
-            AND t.type_id = #{typeId}
-        </if>
+        WHERE (user_id IS NULL OR user_id = #{userId})
+            AND type_id = 1
         ORDER BY name
     </select>
 
-    <select id="findAsset" resultType="org.tracker.common.domain.Asset">
+    <select id="findAssetExpense" resultType="org.tracker.common.domain.Asset">
         SELECT name
         FROM ASSET
-        WHERE user_id IS NULL OR user_id = #{userId}
-        <if test="typeId != null">
-            AND t.type_id = #{typeId}
-        </if>
+        WHERE (user_id IS NULL OR user_id = #{userId})
+            AND type_id = 1
+        ORDER BY name
+    </select>
+
+    <select id="findCategoryIncome" resultType="org.tracker.common.domain.Category">
+        SELECT name
+        FROM CATEGORY
+        WHERE (user_id IS NULL OR user_id = #{userId})
+            AND type_id = 2
+        ORDER BY name
+    </select>
+
+    <select id="findAssetIncome" resultType="org.tracker.common.domain.Asset">
+        SELECT name
+        FROM ASSET
+        WHERE (user_id IS NULL OR user_id = #{userId})
+            AND type_id = 2
         ORDER BY name
     </select>
 

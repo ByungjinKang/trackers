@@ -26,6 +26,9 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/tracker/*").permitAll()
                 .and()
+                .logout()
+                .permitAll()
+                .and()
                 .build();
     }
 }
